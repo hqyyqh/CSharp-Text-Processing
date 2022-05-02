@@ -20,15 +20,21 @@ Components, 2002
 [4] S.-T. Tu, R. Sandström, Int. J. Pres. Ves. Piping, 57, 
 335-344 (1994)
 [5] M.D. Mathew, S. Latha, K.B.S. Rao, Mater. Sci. 
-Eng. A, 456, 28-34 (2007) ";
+Eng. A, 456, 28-34 (2007) 
+[2] RCC MR Design Code, Section 1, French Society for
+Design and Construction Rules for Nuclear Island 
+Components, 2002
+[3] R. SandströM, S.T. Tu, J. Pres. Ves. Technol., 116, 
+76-80 (1994)";
 
-            testText = TextSplit(testText);
+            string textSegmentSymbol = @"\n\n";
+            testText = TextSplit(testText, textSegmentSymbol);
             Console.OutputEncoding = Encoding.Unicode;
             Console.WriteLine(testText);
             Console.ReadLine();
         }
 
-        public static string TextSplit(string testText)
+        public static string TextSplit(string testText, string textSegmentSymbol)
         {
 
             //var posts = new string[] { "post1", "post2", "post3", "post4", "post5", "post6", "post7", "post8",
@@ -66,10 +72,10 @@ Eng. A, 456, 28-34 (2007) ";
 
             // 段落匹配规则
             string regexEndPunctuation = @"[\\.:;!。！？?：\s]$"; // 末位标点匹配
-            string regexItem = @"^^•|^–\s|^-\s|^Chapter\s[1-9][0-9]{0,1}|^([1-9]*\.)+\d{1,2}[\.\s]|^·|^\[\d*\]\s[A-Z]|^\d\)\s|^\d）|^\d*\.\s"; // 开头项目符号匹配
+            string regexItem = @"^^•|^–\s|^-\s|^Chapter\s[1-9][0-9]{0,1}|^([1-9]*\.)+\d{1,2}[\.\s]|^·|^\[\d*\]\s[A-Z]|^\d\)\s|^\d）|^\d*\.\s|^\([Ii][Xx]\)|^\([Ii][Vv]\)|^\([Vv]\)|^\([Vv]?[Ii]{1,3}\)"; // 开头项目符号匹配
             string regexEndAbbr = @" fig\.$| et al\.$| Fig\.$| Eq\.$| eq\.$| p\.$| pp\.$| Ph\.D\.$|cf\.$|Cf\.$|,\s\d{4};$|\.\s\(\d{4}\);$|[Ee]\.[Gg]\.$"; // 末位缩写词
             string regexFirstCapital = @"^[A-Z]"; // 首位大写字母匹配，用于判断英文标题行
-            string regexTitle = @"^[Aa][\s+]*[Bb][\s+]*[Ss][\s+]*[Tt][\s+]*[Rr][\s+]*[Aa][\s+]*[Cc][\s+]*[Tt]$|^[Aa]cknowledge?ments$|^[Rr]eferences$|^参[\s+]*考[\s+]*文[\s+]*献$|^致[\s+]*谢$|^附[\s+]*录$|^摘[\s+]*要$|^目[\s+]*录$|^[Dd]eclaration [Oo]f [Cc]ompeting [Ii]nterest"; // 匹配常见的论文标题
+            string regexTitle = @"^[Aa][\s+]*[Bb][\s+]*[Ss][\s+]*[Tt][\s+]*[Rr][\s+]*[Aa][\s+]*[Cc][\s+]*[Tt]$|^[Aa]cknowledge?ments$|^[Rr]eferences$|^参[\s+]*考[\s+]*文[\s+]*献$|^致[\s+]*谢$|^附[\s+]*录$|^摘[\s+]*要$|^目[\s+]*录$|^[Dd]eclaration [Oo]f [Cc]ompeting [Ii]nterest$|^[Ii]ntroduction$"; // 匹配常见的论文标题
             bool[] isEnd = new bool[testTextArrayLength]; // 末尾是否结束标点，是则末尾分段
             bool[] isItem = new bool[testTextArrayLength]; // 开头是否项目符，是则开头分段
             bool[] isEndAbbr = new bool[testTextArrayLength]; // 末尾结束标点是否缩写词，是则取消末尾分段
@@ -327,33 +333,13 @@ Eng. A, 456, 28-34 (2007) ";
                             refSequenceCount++;
                         }
                     }
-                    // 求一阶差分
-                    int[] difference1StSequence = new int[refSequenceNum - 1];
-                    for (int i = 0; i < refSequenceNum - 1; i++)
+                    for (int i = 0; i < refSequenceArrayPosition.Length - 1; i++)
                     {
-                        difference1StSequence[i] = refSequenceArray[i+1] - refSequenceArray[i];
-                    }
-
-                    bool isArithmeticProgression = true; // 是否为等差数列
-                    foreach (int i in difference1StSequence)
-                    {
-                        if (i != 1)
+                        if (refSequenceArray[i + 1] - refSequenceArray[i] == 1 && refSequenceArrayPosition[i + 1] - refSequenceArrayPosition[i] <= 8) // 数字连续，且一条参考文献很少超过8行
                         {
-                            isArithmeticProgression = false;
-                            break;
-                        }
-                    }
-
-                    if (isArithmeticProgression) // 如果为等差数列
-                    {
-                        for (int i = 0; i < refSequenceArrayPosition.Length - 1; i++)
-                        {
-                            if (refSequenceArrayPosition[i + 1] - refSequenceArrayPosition[i] <= 8) // 一条参考文献很少超过8行
+                            for (int j = refSequenceArrayPosition[i]; j < refSequenceArrayPosition[i + 1] - 1; j++)
                             {
-                                for (int j = refSequenceArrayPosition[i]; j < refSequenceArrayPosition[i + 1]-1; j++)
-                                {
-                                    delimiterArray[j] = " ";
-                                }
+                                delimiterArray[j] = " ";
                             }
                         }
                     }
