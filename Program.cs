@@ -66,8 +66,7 @@ Eng. A, 456, 28-34 (2007) ";
 
             // 段落匹配规则
             string regexEndPunctuation = @"[\\.:;!。！？?：\s]$"; // 末位标点匹配
-            string regexItem = @"^^•|^–\s|^-\s|^Chapter\s[1-9][0-9]{0,1}|^([1-9]*\.)+\d{1,2}[\.\s]|^\d*\.\s|^·|^\[\d*\]\s[A-Z]|^\d\)\s|^\d）"; // 开头项目符号匹配
-            string regexItemNum = ; // 开头数字项目符
+            string regexItem = @"^^•|^–\s|^-\s|^Chapter\s[1-9][0-9]{0,1}|^([1-9]*\.)+\d{1,2}[\.\s]|^·|^\[\d*\]\s[A-Z]|^\d\)\s|^\d）|^\d*\.\s"; // 开头项目符号匹配
             string regexEndAbbr = @" fig\.$| et al\.$| Fig\.$| Eq\.$| eq\.$| p\.$| pp\.$| Ph\.D\.$|cf\.$|Cf\.$|,\s\d{4};$|\.\s\(\d{4}\);$|[Ee]\.[Gg]\.$"; // 末位缩写词
             string regexFirstCapital = @"^[A-Z]"; // 首位大写字母匹配，用于判断英文标题行
             string regexTitle = @"^[Aa][\s+]*[Bb][\s+]*[Ss][\s+]*[Tt][\s+]*[Rr][\s+]*[Aa][\s+]*[Cc][\s+]*[Tt]$|^[Aa]cknowledge?ments$|^[Rr]eferences$|^参[\s+]*考[\s+]*文[\s+]*献$|^致[\s+]*谢$|^附[\s+]*录$|^摘[\s+]*要$|^目[\s+]*录$|^[Dd]eclaration [Oo]f [Cc]ompeting [Ii]nterest"; // 匹配常见的论文标题
