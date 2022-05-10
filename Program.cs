@@ -27,7 +27,7 @@ Components, 2002
 [3] R. SandströM, S.T. Tu, J. Pres. Ves. Technol., 116, 
 76-80 (1994)";
 
-            string textSegmentSymbol = @"\n\n";
+            string textSegmentSymbol = "\n\n";
             testText = TextSplit(testText, textSegmentSymbol);
             Console.OutputEncoding = Encoding.Unicode;
             Console.WriteLine(testText);
@@ -43,6 +43,9 @@ Components, 2002
             //foreach (var post in slicedPosts)
             //    Console.WriteLine(post); // Outputs the first 5 posts
 
+            
+            // 删除末位的换行符，常见于网页复制的文本末尾包含\r\n
+            testText = Regex.Replace(testText, @"$[\n\r]", " ");
             // 删除空行 
             // https://stackoverflow.com/questions/7647716/how-to-remove-empty-lines-from-a-formatted-string
             testText = Regex.Replace(testText, @"^\s+$[\r\n]*", string.Empty, RegexOptions.Multiline);
@@ -160,7 +163,7 @@ Components, 2002
                         {
                             if (isItem[index + 1]) //下一行开头是项目符
                             {
-                                delimiterArray[index] = "\n\n";
+                                delimiterArray[index] = textSegmentSymbol;
                             }
                             else // 下一行开头不是项目符，项目符序列判断后续补充
                             {
@@ -169,14 +172,14 @@ Components, 2002
                         }
                         else // 末尾不是英文缩写
                         {
-                            delimiterArray[index] = "\n\n";
+                            delimiterArray[index] = textSegmentSymbol;
                         }
                     }
                     else // 末尾不是结束标点
                     {
                         if (isItem[index + 1]) // 下一行开头是项目符
                         {
-                            delimiterArray[index] = "\n\n";
+                            delimiterArray[index] = textSegmentSymbol;
                         }
                         else // 下一行开头不是项目符，项目符序列判断后续补充
                         {
@@ -204,16 +207,16 @@ Components, 2002
                 {
                     if (index == 0 && isTitle[index] == true)
                     {
-                        delimiterArray[index] = "\n\n";
+                        delimiterArray[index] = textSegmentSymbol;
                     }
                     else if (index == testTextArrayLength - 1 && isTitle[index] == true)
                     {
-                        delimiterArray[index - 1] = "\n\n";
+                        delimiterArray[index - 1] = textSegmentSymbol;
                     }
                     else if (isTitle[index] == true)
                     {
-                        delimiterArray[index - 1] = "\n\n";
-                        delimiterArray[index] = "\n\n";
+                        delimiterArray[index - 1] = textSegmentSymbol;
+                        delimiterArray[index] = textSegmentSymbol;
                     }
                 }
 
@@ -252,7 +255,7 @@ Components, 2002
                                     }
                                     if (isBlankConnect)
                                     {
-                                        delimiterArray[firstCapitalPosition[j] - 1] = "\n\n";
+                                        delimiterArray[firstCapitalPosition[j] - 1] = textSegmentSymbol;
                                         isGeFirstCapital = true;
                                     }
                                     else
@@ -284,7 +287,7 @@ Components, 2002
                                         }
                                         if (isBlankConnect)
                                         {
-                                            delimiterArray[firstCapitalPosition[j] - 1] = "\n\n";
+                                            delimiterArray[firstCapitalPosition[j] - 1] = textSegmentSymbol;
                                             isGeFirstCapital = true;
                                         }
                                         else
