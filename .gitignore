@@ -3,6 +3,9 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+文本分段处理逻辑.pdf
+文本分段处理逻辑.xmind
+
 # User-specific files
 *.rsuser
 *.suo
