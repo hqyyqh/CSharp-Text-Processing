@@ -22,7 +22,7 @@ Components, 2002
 [5] M.D. Mathew, S. Latha, K.B.S. Rao, Mater. Sci. 
 Eng. A, 456, 28-34 (2007) 
 [2] RCC MR Design Code, Section 1, French Society for
-Design and Construction Rules for Nuclear Island 
+Design and Construction Rules for Nuclear Island `  
 Components, 2002
 [3] R. SandströM, S.T. Tu, J. Pres. Ves. Technol., 116, 
 76-80 (1994)";
@@ -36,14 +36,8 @@ Components, 2002
 
         public static string TextSplit(string testText, string textSegmentSymbol)
         {
-
-            //var posts = new string[] { "post1", "post2", "post3", "post4", "post5", "post6", "post7", "post8",
-            //    "post9", "post10" };
-            //var slicedPosts = posts.Skip(1).Take(5);
-            //foreach (var post in slicedPosts)
-            //    Console.WriteLine(post); // Outputs the first 5 posts
-
-            
+            // 删除前后空白字符，多余空白换行字符会影响段落分割
+            testText = testText.Trim();
             // 删除末位的换行符，常见于网页复制的文本末尾包含\r\n
             testText = Regex.Replace(testText, @"$[\n\r]", " ");
             // 删除空行 
@@ -62,16 +56,8 @@ Components, 2002
 
             // 按段落分割
             string[] testTextArray = testText.Split('\n');
-
-            // 查看段落分割结果
-            //foreach (var word in testTextArray)
-            //{
-            //    //Console.WriteLine(word);
-            //}
-
-            // 查看段落数量
+            // 段落数量
             int testTextArrayLength = testTextArray.Length;
-            //Console.WriteLine(testTextArrayLength);
 
             // 段落匹配规则
             string regexEndPunctuation = @"[\\.:;!。！？?：\s]$"; // 末位标点匹配
